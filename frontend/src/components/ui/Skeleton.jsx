@@ -4,7 +4,7 @@ export default function Skeleton({ className = '', count = 1 }) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className={`animate-pulse bg-surface rounded ${className}`}
+          className={`skeleton-shimmer rounded-xl ${className}`}
           style={{ minHeight: '1rem' }}
         />
       ))}

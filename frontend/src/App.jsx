@@ -47,13 +47,17 @@ export default function App() {
   );
 
   return (
-    <div className="h-screen flex flex-col bg-[#09090B]">
-      {/* Top bar */}
-      <header className="border-b border-border shrink-0">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <h1 className="text-base font-semibold text-primary tracking-tight">
-            Hot Take Tracker
-          </h1>
+    <div className="h-screen flex flex-col">
+      <header className="shrink-0">
+        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+          <div>
+            <h1 className="text-lg font-semibold gradient-text tracking-tight">
+              Hot Take Tracker
+            </h1>
+            <p className="text-xs text-secondary mt-0.5">
+              Catch yourself contradicting your own opinions
+            </p>
+          </div>
 
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
@@ -62,8 +66,8 @@ export default function App() {
                 value={userIdInput}
                 onChange={(e) => setUserIdInput(e.target.value)}
                 onKeyDown={handleUserIdKeyDown}
-                placeholder="Enter any name to start tracking your takes"
-                className="w-64 bg-surface border border-border rounded px-3 py-1.5 text-sm text-primary placeholder-secondary outline-none transition-colors duration-150 focus:border-accent-indigo"
+                placeholder="Enter your name..."
+                className="w-56 glass rounded px-3.5 py-2 text-sm text-primary placeholder-glass-white outline-none transition-all duration-200 focus:shadow-glow focus:bg-glass-hover"
               />
               <Button variant="ghost" onClick={handleUserIdSubmit} disabled={!userIdInput.trim()}>
                 Set
@@ -72,31 +76,30 @@ export default function App() {
 
             {userId && (
               <Button variant="ghost" onClick={() => setReceiptsOpen(true)}>
-                View Receipts
+                Receipts
               </Button>
             )}
           </div>
         </div>
       </header>
 
-      {/* Error banner */}
-      <div className="max-w-3xl mx-auto w-full px-4 pt-3 shrink-0">
+      <div className="max-w-3xl mx-auto w-full px-4 pt-2 shrink-0">
         {error && error.type !== 'validation' && (
           <ErrorBanner error={error} onDismiss={clearError} />
         )}
       </div>
 
-      {/* Loading indicator for history */}
       {fetchingHistory && (
         <div className="max-w-3xl mx-auto w-full px-4 pt-3 shrink-0">
-          <div className="text-xs text-secondary animate-pulse">Loading history...</div>
+          <div className="flex items-center gap-2 text-xs text-secondary">
+            <span className="w-1 h-1 rounded-full bg-accent-indigo animate-pulse" />
+            Loading history...
+          </div>
         </div>
       )}
 
-      {/* Conversation */}
       <ConversationFeed messages={messages} showSlowIndicator={showSlowIndicator} />
 
-      {/* Input */}
       <div className="max-w-3xl mx-auto w-full px-4 shrink-0">
         <StatementInput
           onSubmit={handleSubmitStatement}
@@ -104,13 +107,12 @@ export default function App() {
           error={error}
         />
         {!userId && (
-          <p className="text-[11px] text-secondary text-center pb-3 -mt-2">
+          <p className="text-[11px] text-secondary text-center pb-4 -mt-2">
             Enter a name above to start tracking your takes
           </p>
         )}
       </div>
 
-      {/* Receipts panel */}
       <ReceiptsPanel
         open={receiptsOpen}
         onClose={() => setReceiptsOpen(false)}

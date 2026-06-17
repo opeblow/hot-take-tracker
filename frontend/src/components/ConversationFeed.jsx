@@ -29,20 +29,16 @@ function AgentReply({ content, contradictionDetected, contradictedOpinion, times
     return () => clearInterval(interval);
   }, [content, showTyping]);
 
-  const borderClass = contradictionDetected
-    ? 'border-l-accent-red'
-    : 'border-l-border';
-
   return (
     <div>
-      <div className={`border-l-2 ${borderClass} pl-4 py-1`}>
+      <div className="glass rounded-xl px-5 py-4 max-w-[85%]">
         <p className="text-sm text-primary leading-relaxed typing-cursor">
           {displayed}
           {!done && <span className="opacity-0">|</span>}
         </p>
-        <div className="flex items-center gap-2 mt-1">
+        <div className="flex items-center gap-2 mt-2">
           {contradictionDetected && (
-            <span className="text-[10px] font-semibold tracking-widest text-accent-red uppercase">
+            <span className="text-[10px] font-semibold tracking-widest text-accent-red">
               Contradiction
             </span>
           )}
@@ -52,7 +48,7 @@ function AgentReply({ content, contradictionDetected, contradictedOpinion, times
         </div>
       </div>
       {done && contradictionDetected && contradictedOpinion && (
-        <div className="mt-3">
+        <div className="mt-3 pl-2">
           <ContradictionCard contradictedOpinion={contradictedOpinion} />
         </div>
       )}
@@ -63,9 +59,9 @@ function AgentReply({ content, contradictionDetected, contradictedOpinion, times
 function UserMessage({ content, timestamp }) {
   return (
     <div className="flex justify-end">
-      <div className="bg-surface border border-border rounded px-4 py-3 max-w-[80%]">
+      <div className="glass rounded-xl px-5 py-4 max-w-[85%]">
         <p className="text-sm text-primary leading-relaxed">{content}</p>
-        <p className="text-[10px] text-secondary mt-1 text-right" title={timestamp}>
+        <p className="text-[10px] text-secondary mt-2 text-right" title={timestamp}>
           {formatDistanceToNow(new Date(timestamp), { addSuffix: true })}
         </p>
       </div>
@@ -93,13 +89,14 @@ export default function ConversationFeed({ messages, showSlowIndicator }) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="text-center max-w-md px-4"
         >
+          <div className="text-4xl mb-4 opacity-30">💬</div>
           <p className="text-secondary text-sm leading-relaxed">
-            Tell me a World Cup take. I'll remember it.
+            Tell me a World Cup take. I'll remember it and call you out if you flip-flop.
           </p>
         </motion.div>
       </div>
@@ -107,7 +104,7 @@ export default function ConversationFeed({ messages, showSlowIndicator }) {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-6 space-y-5">
+    <div className="flex-1 overflow-y-auto scrollbar-thin px-4 py-6 space-y-4">
       <AnimatePresence initial={false}>
         {messages.map((msg, i) => (
           <motion.div
@@ -135,7 +132,7 @@ export default function ConversationFeed({ messages, showSlowIndicator }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex items-center gap-2 text-xs text-secondary pl-4"
+          className="flex items-center gap-2 text-xs text-secondary pl-5"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-accent-indigo animate-pulse" />
           still thinking...
