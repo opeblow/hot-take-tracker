@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from typing import Any
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import field_validator
 
@@ -32,6 +34,21 @@ class Settings(BaseSettings):
         if not v.startswith("http://") and not v.startswith("https://"):
             raise ValueError("Must be a valid HTTP or HTTPS URL")
         return v.rstrip("/")
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, v: Any) -> list[str]:
+        if isinstance(v, list):
+            return v
+        if isinstance(v, str):
+            v = v.strip()
+            if v.startswith("["):
+                import json
+                return json.loads(v)
+            if "," in v:
+                return [o.strip() for o in v.split(",") if o.strip()]
+            return [v]
+        raise ValueError(f"Unsupported type for cors_origins: {type(v).__name__}")
 
 
 settings = Settings()
